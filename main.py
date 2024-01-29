@@ -12,24 +12,32 @@ window.title("TicTacToe")
 def button_clicked(row, col):
     print(f"Button clicked at row {row}, column {col}")
 
-btnText = "-"
+counter = 0
 def changeText(row, col):
-    num = 0
-    if num % 2 == 0:#even
-        btnText ="X"
-        num += 1
-    else:#odd
-        btnText = ("O")
-        num += 1
-    print(row, col)
-#def createMenu():
-#button1 = ttk.Button(window, text=" ", command=changeText())
-#button1.grid(row=0, column=0)
+    global counter
+    specButton = buttons[row][col]
+    if counter % 2 == 0:
+        specButton["text"] = "X"
+    else:
+        specButton.configure(text = "O")
+    counter += 1
+    print(counter)
+
+
+
+
+buttons = []
 
 for i in range(3):
+    row_buttons = []
     for x in range(3):
-        button = ttk.Button(window, textvariable=btnText, command=lambda i=i, j=x: changeText(i, j))
+        button = ttk.Button(window, text=" ")
         button.grid(row = i, column = x, padx=1, pady=1)
+        button.bind('<Button-1>', lambda event, i = i, j = x: changeText(i, j))
+        row_buttons.append(button)
+    buttons.append(row_buttons)
+
+
 
             
 
