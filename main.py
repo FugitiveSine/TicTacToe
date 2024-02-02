@@ -1,7 +1,8 @@
 import tkinter
 from tkinter import ttk
 
-gameBoard = [ [1, 2, 3], [4, 5, 6], [7, 8, 9]]
+#gameBoard = [ [1, 2, 3], [4, 5, 6], [7, 8, 9]]
+gameBoard1 = {}
 
 
 window = tkinter.Tk()
@@ -18,24 +19,82 @@ def changeText(row, col):
     specButton = buttons[row][col]
     if counter % 2 == 0:
         specButton["text"] = "X"
+        gameBoard1[specButton] = "X" #Sets value of specific button to X or O
     else:
         specButton.configure(text = "O")
+        gameBoard1[specButton] = "O"
     counter += 1
-    print(counter)
+    checkWinner()
+    lockButton(specButton)
+    
 
 #test
 
 
 buttons = []
-
+counta = 0
 for i in range(3):
     row_buttons = []
     for x in range(3):
         button = ttk.Button(window, text=" ")
         button.grid(row = i, column = x, padx=1, pady=1)
-        button.bind('<Button-1>', lambda event, i = i, j = x: changeText(i, j))
+        button.bind('<Button-1>', lambda event, i = i, j = x:  changeText(i, j))
         row_buttons.append(button)
+        counta = counta + 1
+        gameBoard1[button] = ""#puts all buttons inside dictionary
+        
+
     buttons.append(row_buttons)
+
+
+
+
+def lockButton(specButton):
+    specButton.config(state=tkinter.DISABLED)
+
+
+def checkWinner():
+    tie = True
+    for i in range(3):
+        #checks vertical
+        if all(buttons[j][i]["text"] == "X" for j in range(3)):
+            print("X is the winner")
+            tie = False
+        if all(buttons[j][i]["text"] == "O" for j in range(3)):
+            print("O is the winner")
+            tie = False
+        #checks horizontal
+        if all(buttons[i][j]["text"] == "O" for j in range(3)):
+            print("O is the winner")
+            tie = False
+        if all(buttons[i][j]["text"] == "X" for j in range(3)):
+            print("X is the winner")
+            tie = False
+        #check diagonal
+    if buttons[0][0]["text"] == "X" and buttons[1][1]["text"] == "X" and buttons[2][2]["text"] == "X":
+        print("X is the winner")
+        tie = False
+    if buttons[0][0]["text"] == "O" and buttons[1][1]["text"] == "O" and buttons[2][2]["text"] == "O":
+        print("O is the winner")
+        tie = False
+    if buttons[0][2]["text"] == "O" and buttons[1][1]["text"] == "O" and buttons[2][0]["text"] == "O":
+        print("O is the winner")
+        tie = False
+    if buttons[0][2]["text"] == "X" and buttons[1][1]["text"] == "X" and buttons[2][0]["text"] == "X":
+        print("X is the winner")
+        tie = False
+    if all(button["state"] == tkinter.DISABLED for row in buttons for button in row)  and tie:
+        print("It is a tie")
+    
+
+    
+    #print(gameBoard1[specButton00])
+    #print(gameBoard1[specButton11])
+    #print(gameBoard1[specButton22])
+    
+    #if gameBoard1[specButton00] == "X" and:
+        #print("Its an X")
+    
 
 
 
